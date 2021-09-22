@@ -17,7 +17,7 @@ file_reader:close()
 -- [[
 local schema_table = cjson.decode(file_string)
 for k,v in pairs(schema_table) do
-  if k != "schema" then
+  if k ~= "schema" then
     schema_table[k] = nil
   end
 end

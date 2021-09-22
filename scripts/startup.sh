@@ -7,3 +7,4 @@
 # Load the model in mleap
 
 # Start nginx
+nginx -c /etc/nginx/nginx.conf
