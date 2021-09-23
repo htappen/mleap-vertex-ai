@@ -3,13 +3,13 @@
 
 # Download the model
 mkdir -p /root/models/
-gsutil cp $AIP_STORAGE_URI /root/models/
-ls *.zip | head -n 1 | xargs mv {} /root/model.zip
+gsutil cp -r $AIP_STORAGE_URI /root/models/
+find /root/models -name "*zip" | head -n 1 | xargs -I{} mv {} /root/model.zip
 
 # Download the schema
 mkdir -p /root/schema/
 gsutil cp $MLEAP_SCHEMA_URI /root/schema/
-ls *.zip | head -n 1 | xargs mv {} /root/input_schema.json
+find /root/schema -name "*json" | head -n 1 | xargs -I{} mv {} /root/input_schema.json
 
 # Start mleap
 /opt/docker/bin/mleap-spring-boot &
