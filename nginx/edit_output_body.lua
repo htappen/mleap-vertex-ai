@@ -1,5 +1,5 @@
 local cjson = require "cjson"
-local output_key_name = os.getenv("OUTPUT_KEY")
+local output_key_name = os.getenv("OUTPUT_KEY") -- TODO: support multiple keys
 
 -- TODO: not really going to work with large responses. Need to deal with chunking
 if not ngx.arg[2] then
