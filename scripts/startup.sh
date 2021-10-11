@@ -1,5 +1,17 @@
 # Check that necessary config is set
-# TODO: add the check
+
+if [ ! -v AIP_STORAGE_URI ]; then
+    echo "Env variable AIP_STORAGE_URI is not set! Usually this means you didn't set artifactUri in Vertex when deploying the model. " >&2
+fi
+
+if [ ! -v MLEAP_SCHEMA_URI ]; then
+    echo "Env variable MLEAP_SCHEMA_URI is not set! Set this to the GCS path of an example input to your model, in MLeap Frame JSON format. " >&2
+fi
+
+if [ ! -v OUTPUT_KEY ]; then
+    echo "Env variable OUTPUT_KEY is not set! Set this to the key from your model that contains the final prediction. " >&2
+fi
+
 
 # Start mleap
 /opt/docker/bin/mleap-spring-boot &

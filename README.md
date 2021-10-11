@@ -14,6 +14,8 @@ Model servers hosted on Google Cloud Vertex AI must satisfy [certain requirement
 1. Create a Vertex AI model, including setting these fields
   - `artifactUri`: The page to the MLeap model from above
   - `containerSpec`:
-    - `env`: with `name` = `OUTPUT_KEY`, `value` = the name of the key in the output frame from your model that contains the final prediction result
+    - `env`: Set these variables
+      - `name` = `OUTPUT_KEY`, `value` = the name of the key in the output frame from your model that contains the final prediction result
+      - `name` = `MLEAP_SCHEMA_URI`, `value` = the GCS path (e.g. `gs://my_bucket/my_path/schema.json`) to the MLeap schema for your model. The required format is the same as the MLeap Frame JSON format, except the `rows` key is not required. The easiest way to provide this is to export an MLeap Frame compatible with your model. See [here](https://github.com/combust/mleap/blob/master/mleap-benchmark/src/main/resources/leap_frame/frame.airbnb.json) for an example.
     - `predictRoute`: `/models/model/transform`
     - `healthRoute`: `/api/`
