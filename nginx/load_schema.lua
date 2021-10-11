@@ -6,10 +6,10 @@ local SCHEMA_KEY = "schema"
 local schema_cache = ngx.shared.input_schema
 
 -- Load the file into a string
-
-
--- TODO: error handling - what if file doesn't exist?
 local file_reader = io.open(FILE_PATH, "r")
+if file_reader == nil then
+    ngx.log(ngx.ERROR, "Input schema is not found. Did you set MLEAP_SCHEMA_URI?")
+end
 local file_string = file_reader:read("a")
 file_reader:close()
 
