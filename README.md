@@ -19,3 +19,6 @@ Model servers hosted on Google Cloud Vertex AI must satisfy [certain requirement
       - `name` = `MLEAP_SCHEMA_URI`, `value` = the GCS path (e.g. `gs://my_bucket/my_path/schema.json`) to the MLeap schema for your model. The required format is the same as the MLeap Frame JSON format, except the `rows` key is not required. The easiest way to provide this is to export an MLeap Frame compatible with your model. See [here](https://github.com/combust/mleap/blob/master/mleap-benchmark/src/main/resources/leap_frame/frame.airbnb.json) for an example.
     - `predictRoute`: `/models/model/transform`
     - `healthRoute`: `/api/`
+1. Send predictions that look like `{ "instances": [ [ 1.0, 2.0, 3.0, ... ] ]}`. That is, each request body should be:
+  - A JSON object with a single key, `instances`.
+  - The value of `instances` should be an array of arrays, where each sub-array contains values of the type your model suggests. They need to be in the same order as the fields listed in the schema mentioned above.
