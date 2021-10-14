@@ -1,7 +1,18 @@
+-- After MLeap processes a request, this script translates the result to a format compatible with Vertex AI
+-- From: { "schema ": [ { "name": ..., "type": ...}], "rows": [[...]...]}
+-- To: { "predictions" [...[...]]"}
+-- This script needs to take one of the output keys and return it as a prediction
+
 local cjson = require "cjson"
 local output_key_name = os.getenv("OUTPUT_KEY") -- TODO: support multiple keys
 
+if output_key_name == nil then
+    ngx.log(ngx.WARN, "OUTPUT_KEY_NAME isn't found. Please send environment variable")
+end
+
+-- Do the actual conversion of a MLeap JSON format to Vertex required
 local function edit_json(body)
+    -- Find out which slot in the output array contains the final prediction
     local mleap_json = cjson.decode(body)
     local key_position = 0
     for i, schema_field in ipairs(mleap_json.schema.fields) do
@@ -11,6 +22,11 @@ local function edit_json(body)
         end
     end
 
+    if key_position == 0 then
+        ngx.log(ngx.WARN, "Key " .. output_key_name .. "was not found in the schema. Update the schema or env var OUTPUT_KEY")
+    end
+
+    -- Grab the prediction result from each output
     local predictions_out = {}
     for i, row in ipairs(mleap_json.rows) do
         predictions_out[i] = row[key_position]
@@ -20,10 +36,12 @@ local function edit_json(body)
     return cjson.encode(json_out)
 end
 
+-- Apply edit_json only to the body content
 local function edit_body()
     return edit_json(ngx.arg[1])
 end
 
+-- Try / catch on editing the body
 local ok_prediction = true
 -- TODO: not really going to work with large responses. Need to deal with chunking
 if not ngx.arg[2] then

@@ -1,4 +1,6 @@
--- TODO: use safe library
+-- Initialization script that loads a schema saved in JSON into shared
+-- memory so that the Lua scripts running on each request have it
+
 local cjson = require "cjson"
 
 local FILE_PATH = "/root/input_schema.json"
@@ -25,5 +27,6 @@ if schema_table.schema == nil then
     ngx.log(ngx.WARN, "'schema' key not found in the input file.")
 end
 
+-- Save it in shared memory so Lua can use it to edit bodies on each request
 local out_string = cjson.encode(schema_table.schema)
 schema_cache:set(SCHEMA_KEY, out_string)

@@ -1,3 +1,9 @@
+-- For requests going from Vertex to MLeap, edit the input data to make it
+-- compatible with MLeap
+-- From: { "instances" [...[...]]"}
+-- To: { "schema ": [ { "name": ..., "type": ...}], "rows": [[...]...]}
+-- It does this by appending the schema to the JSON and changing the key name of "rows"
+
 local SCHEMA_KEY = "schema"
 local schema_cache = ngx.shared.input_schema:get(SCHEMA_KEY)
 
