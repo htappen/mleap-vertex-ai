@@ -27,7 +27,7 @@ COPY scripts/startup.sh /opt/docker/bin/
 # Configure nginx as a proxy
 COPY nginx/edit_input_body.lua /usr/local/openresty/nginx/
 COPY nginx/edit_output_body.lua /usr/local/openresty/nginx/
-COPY nginx/load_schema.lua /usr/local/openresty/nginx/
+COPY nginx/mleap_schema.lua /usr/local/openresty/nginx/
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 ENTRYPOINT ["/bin/bash", "/opt/docker/bin/startup.sh"]
